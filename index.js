@@ -337,9 +337,29 @@ exports.statement = function(options) {
     });
     options.useragent = 'foo';
     var cmd = exports.request(options, function() { });
-    cmd.args = u.without(cmd.args, '--show-error', '--no-buffer', '--statement', '--location', '--silent', null, '--max-redirs', '--user-agent', 'foo', false, "Accept-Language: en-US,en;q=0.8", '--header', 'Accept: foo', 'Accept-Charset: foo', 'Accept-Language: foo');
-    return cmd.proc_cmd + " " + cmd.args.join(' ');
+
+    cmd.args = u.without(cmd.args, '--show-error', '--no-buffer', '--statement', '--location', '--silent', null, '--max-redirs', '--user-agent', 'foo', false, "Accept-Language: en-US,en;q=0.8", '--header', 'Accept: foo', 'Accept-Charset: foo', 'Accept-Language: foo', '--url');
+    cmd.args.unshift(cmd.proc_cmd);
+    var cmd_string = cmd.args.join(' ');
+
+    // any item that has & in it should be escaped
+    cmd_string = cmd_string.replace(/\S+\&\S+/g,"\"$&\"");
+
+    return this.truncate(cmd_string);
 }
+
+var opts_replacements = {
+    "--request ":       "-X ",
+    "--data ":          "-d ",
+}
+
+exports.truncate = function(cmd) {
+    u.keys(opts_replacements).forEach(function(key) {
+        cmd = cmd.replace(key, opts_replacements[key]);
+    });
+    return cmd;
+}
+
 
 
 /**

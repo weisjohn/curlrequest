@@ -159,6 +159,18 @@ curl.request(options, function (err, data) {
 });
 ```
 
+
+**Example 4**. Just grab the statement
+
+```javascript
+var options = {
+    url: 'google.com'
+};
+
+curl.statement(options);
+// returns `curl -X GET http://google.com/
+```
+
 ## License
 
 Copyright (c) 2012 Chris O'Hara <cohara87@gmail.com>

@@ -12,7 +12,12 @@ var local = repl.start("curl> ");
 // Exposing the function "mood" to the local REPL's context.
 local.context.curl = curl;
 
-var d = curl.statement({ 'url' : 'http://johnweis.com', 'method' : 'POST', 'data' : { 'foo' : 'bar', '2' : '3' } });
+var d = curl.statement({ 
+    'url' : 'http://johnweis.com', 
+    'method' : 'POST', 
+    'data' : { 'foo' : 'bar', '2' : '3', 'apples' : 'oranges' },
+    'headers': { 'accept': 'application/json' }
+});
 
 local.context.d = d;
 
